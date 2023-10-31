@@ -1,0 +1,209 @@
+﻿<div class="container-fluid">
+    <div class="row pt-4 pb-3">
+        <!-- Title -->
+        <div class="col-lg-9 col-sm-12 text-start mb-3 mb-sm-0">
+            <h2 class="text-primary">Point of Sales</h2>
+            <p class="transaction">Transaction #:</p>
+        </div>
+
+        <div class="col-3">
+            <div class="row">
+                <div class="dropdown d-flex flex-column justify-content-end" style="text-align: right">
+                    <label for="store" class="mb-0">
+                        Store:
+                        <select id="store" name="store">
+                            <option value="1">Addsome Business Corporation</option>
+                            <option value="2">Ahead Biz Computer</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="row pt-1">
+                <div class="dropdown d-flex flex-column justify-content-center" style="text-align: right">
+                    <label for="Sales_channel" class="mb-0">
+                        Sales Channel:
+                        <select id="Sales_channel" name="Sales_channel">
+                            <option value="1">Walk-in</option>
+                            <option value="2">On-call</option>
+                            <option value="3">Chat-based</option>
+                            <option value="4">Website</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row pt-2 pb-3">
+        <div class="col-6">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" id="inputGroup-sizing-three">Barcode</label>
+                    <input type="text" class="form-control" aria-describedby="inputGroup-sizing-three">
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="search-btn">
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="Sales" asp-action="AddProduct">Search Product</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row pt-1 pb-3">
+        <div class="col-7">
+            <div class="border p-3 container shadow">
+                <!-- Table with 7 columns -->
+                <table class="table">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">QTY.</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                    <tbody>
+                        <!-- Add your table rows here -->
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Product name</td>
+                            <td>01</td>
+                            <td>₱ 0.00</td>
+                            <td>₱ 0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- customer info container-->
+        <div class="col-5">
+            <div class="border p-3 container shadow">
+                <!--Title-->
+                <div class="row pb-2">
+                    <h4 class="text-primary">Customer Information</h4>
+                    <hr />
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="floatingInput">First Name</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="E.g.: Juan" required />
+                    </div>
+                    <div class="col-6">
+                        <label for="floatingInput">Last Name</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="E.g.: Dela Cruz" required />
+                    </div>
+                </div>
+                <div class="row pt-1">
+                    <div class="col-6">
+                        <label for="floatingInput">Email Address</label>
+                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required />
+                    </div>
+                    <div class="col-6">
+                        <label for="floatingInput">Contact #</label>
+                        <input type="tel" class="form-control" id="floatingInput" placeholder="E.g.: 09123456789" required />
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="row pt-2">
+                        <p class="text-primary">Billing Address</p>
+                    </div>
+                    <div class="col-5">
+                        <label for="floatingInput">Apt./Suite/Unit #</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Apt./Suite/Unit #" required />
+                    </div>
+                    <div class="col-7">
+                        <label for="floatingInput">Street/Subdivision Name</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="Street/Subdivision Name" required />
+                    </div>
+                </div>
+                <div class="row pt-1">
+                    <div class="col-6">
+                        <label for="floatingInput">Barangay</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="E.g.: San Roque" required />
+                    </div>
+                    <div class="col-6">
+                        <label for="floatingInput">City</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="E.g.: Antipolo" required />
+                    </div>
+                </div>
+                <div class="row pt-1 pb-3">
+                    <div class="col-8">
+                        <label for="floatingInput">Province</label>
+                        <input type="text" class="form-control" id="floatingInput" placeholder="E.g.: Rizal" required />
+                    </div>
+                    <div class="col-4">
+                        <label for="floatingInput">Zipcode</label>
+                        <input type="text" class="form-control" id="floatingInput" maxlength="4" placeholder="E.g.: 1870" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="row pt-1 pb-3">
+        <div class="col-7">
+            <div class="border p-3 container shadow">
+                <style>
+                    .custom {
+                        color: white;
+                        text-decoration: none;
+                    }
+
+                        .custom:hover {
+                            color: white;
+                        }
+                </style>
+                <div class="row pb-2">
+                    <button class="btn btn-primary col-2 mx-1" type="button">
+                        <div class="icon-text">
+                            <i class="bi bi-bag-plus"></i>
+                            Quantity
+                        </div>
+                    </button>
+                    <button class="btn btn-primary col-2 mx-1" type="button">
+                        <div class="icon-text">
+                            <i class="bi bi-percent"></i>
+                            Discount
+                        </div>
+                    </button>
+                    <button class="btn btn-info col-3 mx-1" type="button"><a class="custom" asp-area="Admin" asp-controller="Sales" asp-action="PriceCheck">Price Check</a></button>
+                    <button class="btn btn-primary col-2 mx-1" type="button">New</button>
+                    <button class="btn btn-warning col-2 mx-1" type="button">Hold</button>
+                </div>
+                <div class="row justify-content-center">
+                    <button class="btn btn-secondary col-3 mx-1" type="button"><a class="custom" asp-area="Admin" asp-controller="Sales" asp-action="ReturnandRefund">Return & Refund</a></button>
+                    <button class="btn btn-danger col-3 mx-1" type="button">Void</button>
+                    <button class="btn btn-success col-3 mx-1" type="button"><a class="custom" asp-area="Admin" asp-controller="Sales" asp-action="Payment"><b>Payment</b></a></button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for qty -->
+
+        <div class="col-5">
+            <div class="border p-3 container shadow">
+                <table class="table">
+                    <tr>
+                        <td scope="row">Sub-total</td>
+                        <td style="text-align: right">₱ 0.00</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Applied Discount</td>
+                        <td style="text-align: right">0%</td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Additional Charges</td>
+                        <td style="text-align: right">Add</td>
+                    </tr>
+                    <tr>
+                        <th scope="col"><h3>TOTAL:</h3></th>
+                        <th scope="col" style="text-align: right"><h3>₱ 0.00</h3></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
