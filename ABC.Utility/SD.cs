@@ -27,6 +27,8 @@ namespace ABC.Utility
         //Payment Status
         public const string PaymentStatusPending = "Pending"; //default 
 		public const string PaymentStatusApproved = "Paid";
-		
+
+
+		public const string SessionCart = "SessionShoppingCart";
 	}
 }

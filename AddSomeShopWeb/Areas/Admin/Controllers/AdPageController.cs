@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
-    public class AdPageController : Controller
+	[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+	public class AdPageController : Controller
     {
         public IActionResult Index()
         {

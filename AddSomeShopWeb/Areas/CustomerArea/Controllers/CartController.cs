@@ -3,6 +3,7 @@ using ABC.Models;
 using ABC.Models.ViewModels;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -156,11 +157,13 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
         //Minus Button
         public IActionResult Minus(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked:true);
 
             //Remove the item if less than 1
             if(cartFromDb.Count <= 1)
             {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count()-1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -176,10 +179,12 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
         //Delete Button
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked:true);
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+            .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
 
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
-
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }

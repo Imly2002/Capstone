@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
+	[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
 
-    public class InventoryController : Controller
+	public class InventoryController : Controller
     {
         public IActionResult Index()
         {
