@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ABC.Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class POSController : Controller
+	[Authorize(Roles = SD.Role_Admin)]
+
+	public class POSController : Controller
     {
         public IActionResult Index()
         {

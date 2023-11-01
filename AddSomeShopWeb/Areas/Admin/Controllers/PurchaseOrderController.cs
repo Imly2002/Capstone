@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Admin)]
 
     public class PurchaseOrderController : Controller
     {
