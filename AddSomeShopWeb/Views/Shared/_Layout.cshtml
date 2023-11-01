@@ -47,9 +47,13 @@
                                     <i class="bi bi-cart"></i>&nbsp;
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="CustomerArea" asp-controller="Home" asp-action="ManageOrder">Manage Order</a>
-                            </li>
+                            @if (User.IsInRole(SD.Role_Customer))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="CustomerArea" asp-controller="Home" asp-action="ManageOrder">Manage Order</a>
+                                </li>
+                            }
+                           
                         </ul>
                     </div>
 

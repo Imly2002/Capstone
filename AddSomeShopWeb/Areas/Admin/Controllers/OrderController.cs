@@ -94,10 +94,11 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 			orderHeader.Carrier = OrderVM.OrderHeader.Carrier;
 			orderHeader.OrderStatus = SD.StatusShipped;
 			orderHeader.ShippingDate = DateTime.Now;
+            orderHeader.OrderStatus = SD.StatusShipped;
 
 			_unitOfWork.OrderHeader.Update(orderHeader);
-			_unitOfWork.Save();
-			TempData["toastAdd"] = "Order Shipped Succesfully";
+            _unitOfWork.Save();
+			TempData["toastAdd"] = "Order Out for Delivery!";
 			return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
 		}
 
@@ -153,9 +154,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
             switch (status)
             {
-                case "pending":
-                    objOrderHeaders = objOrderHeaders.Where(u=>u.PaymentStatus == SD.PaymentStatusPending); 
-					break;
+                
                 case "inprocess":
                     objOrderHeaders = objOrderHeaders.Where(u => u.OrderStatus== SD.StatusProcessing);
                     break;

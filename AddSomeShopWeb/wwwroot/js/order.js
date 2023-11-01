@@ -9,8 +9,8 @@ $(document).ready(function () {
         if (url.includes("completed")) {
             loadDataTable("completed");
         } else {
-            if (url.includes("pending")) {
-                loadDataTable("pending");
+            if (url.includes("shipped")) {
+                loadDataTable("shipped");
             } else {
                 if (url.includes("approved")) {
                     loadDataTable("approved");
