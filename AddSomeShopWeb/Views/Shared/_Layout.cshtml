@@ -1,5 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    int cartCount = HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart) ?? 0;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,24 +49,6 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="AdPage" asp-action="Index">Admin Page</a>
                             </li>
                             }
-                            @if(HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart) != null)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="CustomerArea" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart"></i>&nbsp;
-                                        (@HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart))
-                                    </a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="CustomerArea" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart"></i>&nbsp;
-                                        (0)
-                                    </a>
-                                </li>
-                            }
 
                             @if (User.IsInRole(SD.Role_Customer))
                             {
@@ -69,7 +56,21 @@
                                     <a class="nav-link" asp-area="CustomerArea" asp-controller="Home" asp-action="ManageOrder">Manage Order</a>
                                 </li>
                             }
-                           
+
+                            @if (User.IsInRole(SD.Role_Customer))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link position-relative" asp-area="CustomerArea" asp-controller="Cart" asp-action="Index">
+                                        <i class="bi bi-cart ms-2"></i>
+                                        @if (cartCount > 0)
+                                        {
+                                            <span class="position-absolute top-90 start-90 translate-middle badge rounded-pill bg-danger">
+                                                @cartCount
+                                            </span>
+                                        }
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
 

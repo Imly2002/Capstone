@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ABC.Utility;
+using Microsoft.AspNetCore.Authentication.Google;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = $"/Identity/Account/Login";
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
+//Google Login
+builder.Services.AddAuthentication().AddGoogle(GoogleOptions =>
+{
+    GoogleOptions.ClientId = "982898263200-84f9ol96nctd6barsrdp443c5n5fr8jl.apps.googleusercontent.com";
+    GoogleOptions.ClientSecret = "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";
 });
 
 builder.Services.AddDistributedMemoryCache();
