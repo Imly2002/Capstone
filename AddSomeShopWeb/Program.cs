@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authentication.Google;
 using System.Configuration;
+using ABC.DataAccess.DBInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddSession(option =>
     option.Cookie.IsEssential = true;
 });
 
+builder.Services.AddScoped<IDBInitializer, DBInitializer>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
@@ -58,9 +60,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+SeedDatabase();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=CustomerArea}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope()) {
+        var DBInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+        DBInitializer.Initialize();
+    }
+}
