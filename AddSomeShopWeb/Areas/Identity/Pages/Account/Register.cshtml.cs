@@ -193,12 +193,13 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
                         if (User.IsInRole(SD.Role_Admin))
                         {
                             TempData["toastAdd"] = "New User Created Succesfully";
+                            return LocalRedirect(returnUrl); // Takes back 
                         }
                         else
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl); 
                         }
-                        return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
