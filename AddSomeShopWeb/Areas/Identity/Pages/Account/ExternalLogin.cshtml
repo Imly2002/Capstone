@@ -39,9 +39,9 @@
             </div>
             <!--Street Address-->
             <div class="form-floating mb-3">
-                <input asp-for="Input.StreetAddress" class="form-control" autocomplete="email" placeholder="Please enter your street address." />
-                <label asp-for="Input.StreetAddress" class="form-label"></label>
-                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                <input asp-for="Input.StreetName" class="form-control" autocomplete="email" placeholder="Please enter your street name." />
+                <label asp-for="Input.StreetName" class="form-label"></label>
+                <span asp-validation-for="Input.StreetName" class="text-danger"></span>
             </div>
             <!--City-->
             <div class="form-floating mb-3">
@@ -51,9 +51,15 @@
             </div>
             <!--Province-->
             <div class="form-floating mb-3">
-                <input asp-for="Input.State" class="form-control" autocomplete="email" placeholder="Please enter your province." />
-                <label asp-for="Input.State" class="form-label"></label>
-                <span asp-validation-for="Input.State" class="text-danger"></span>
+                <input asp-for="Input.Province" class="form-control" autocomplete="email" placeholder="Please enter your province." />
+                <label asp-for="Input.Province" class="form-label"></label>
+                <span asp-validation-for="Input.Province" class="text-danger"></span>
+            </div>
+            <!--Barangay-->
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Barangay" class="form-control" autocomplete="email" placeholder="Please enter your Barangay." />
+                <label asp-for="Input.Barangay" class="form-label"></label>
+                <span asp-validation-for="Input.Barangay" class="text-danger"></span>
             </div>
             <!--Postal Code-->
             <div class="form-floating mb-3">

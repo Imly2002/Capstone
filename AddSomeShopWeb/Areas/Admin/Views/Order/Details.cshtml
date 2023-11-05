@@ -41,8 +41,8 @@
 							<div class="row my-1">
 								<div class="col-3">Address</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
-									<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+									<input asp-for="OrderHeader.StreetName" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.StreetName" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -53,10 +53,17 @@
 								</div>
 							</div>
 							<div class="row my-1">
-								<div class="col-3">State</div>
+								<div class="col-3">Province</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.State" type="text" class="form-control" />
-									<span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+									<input asp-for="OrderHeader.Province" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.Province" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="row my-1">
+								<div class="col-3">Barangay</div>
+								<div class="col-9">
+									<input asp-for="OrderHeader.Barangay" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.Barangay" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">

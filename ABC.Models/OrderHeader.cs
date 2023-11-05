@@ -32,15 +32,18 @@ namespace ABC.Models
         public string? PhoneNumber {  get; set; }
 
         [Required]
-        public string? StreetAddress { get; set; }
+        public string? StreetName { get; set; }
 
         [Required]
         public string? City { get; set; }
 
         [Required]
-        public string? State { get; set; }
+        public string? Province { get; set; }
 
-        [Required]
+		[Required]
+		public string? Barangay { get; set; }
+
+		[Required]
         public string? PostalCode { get; set; }
 
         [Required]

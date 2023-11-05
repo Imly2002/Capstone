@@ -55,9 +55,10 @@ namespace ABC.DataAccess.DBInitializer
                     Email = "admin@abc.com",
                     Name = "Kurt Ian",
                     PhoneNumber = "02226554812",
-                    StreetAddress = "test 123 Compound",
-                    State = "Rizal",
-                    PostalCode = "1940",
+                    StreetName = "test 123 Compound",
+					Province = "Rizal",
+					Barangay = "Pag-asa",
+					PostalCode = "1940",
                     City = "Binangonan"
                 }, "Admin123*").GetAwaiter().GetResult();
 

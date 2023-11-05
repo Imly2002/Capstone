@@ -90,9 +90,10 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
 			//Additional Column To User DB
 			[Required]
 			public string Name { get; set; }
-			public string? StreetAddress { get; set; }
+			public string? StreetName { get; set; }
 			public string? City { get; set; }
-			public string? State { get; set; }
+			public string? Province { get; set; }
+			public string? Barangay { get; set; }
 			public string? PostalCode { get; set; }
 			public string? PhoneNumber { get; set; }
 		}
@@ -167,7 +168,7 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-				user.StreetAddress = Input.StreetAddress;
+				user.StreetName = Input.StreetName;
                 user.City = Input.City;
                 user.PostalCode = Input.PostalCode;
                 user.Name = Input.Name;

@@ -39,7 +39,7 @@
 							<div class="row my-1">
 								<div class="col-3">Address</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.StreetAddress" readonly type="text" class="form-control" />
+									<input asp-for="OrderHeader.StreetName" readonly type="text" class="form-control" />
 								</div>
 							</div>
 							<div class="row my-1">
@@ -49,9 +49,15 @@
 								</div>
 							</div>
 							<div class="row my-1">
-								<div class="col-3">State</div>
+								<div class="col-3">Province</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.State" readonly type="text" class="form-control" />
+									<input asp-for="OrderHeader.Province" readonly type="text" class="form-control" />
+								</div>
+							</div>
+							<div class="row my-1">
+								<div class="col-3">Barangay</div>
+								<div class="col-9">
+									<input asp-for="OrderHeader.Barangay" readonly type="text" class="form-control" />
 								</div>
 							</div>
 							<div class="row my-1">

@@ -48,9 +48,10 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
             orderHeaderFromb.Name = OrderVM.OrderHeader.Name;
             orderHeaderFromb.PhoneNumber = OrderVM.OrderHeader.PhoneNumber;
-            orderHeaderFromb.StreetAddress = OrderVM.OrderHeader.StreetAddress;
+            orderHeaderFromb.StreetName = OrderVM.OrderHeader.StreetName;
             orderHeaderFromb.City = OrderVM.OrderHeader.City;
-            orderHeaderFromb.State = OrderVM.OrderHeader.State;
+            orderHeaderFromb.Province = OrderVM.OrderHeader.Province;
+            orderHeaderFromb.Barangay = OrderVM.OrderHeader.Barangay;
             orderHeaderFromb.PostalCode = OrderVM.OrderHeader.PostalCode;
 
             if (!string.IsNullOrEmpty(OrderVM.OrderHeader.Carrier))
