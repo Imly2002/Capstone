@@ -1,18 +1,17 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    loadDataTable("inprocess");
+    loadDataTable();
 });
 
 function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/admin/user/getall'},
+        "ajax": { url: '/admin/user/getall' },
         "columns": [
             { data: 'name', "width": "10%" },
             { data: 'email', "width": "15%" },
             { data: 'phoneNumber', "width": "10%" },
-            { data: '', "width": "10%" },
-            { data: '', "width": "10%" },
+            { data: 'role', "width": "10%" },
             {
                 data: 'id',
                 "render": function (data) {
@@ -25,3 +24,4 @@ function loadDataTable(status) {
         ]
     });
 }
+
