@@ -190,18 +190,18 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        if (User.IsInRole(SD.Role_Admin))
-                        {
-                            TempData["toastAdd"] = "New User Created Succesfully";
-                            return LocalRedirect(returnUrl); // Takes back 
-                        }
-                        else
-                        {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl); 
-                        }
-                    }
-                }
+						if (User.IsInRole(SD.Role_Admin))
+						{
+							TempData["toastAdd"] = "New User Created Successfully";
+							return RedirectToAction("Index", "User", new { area = "admin" });
+						}
+						else
+						{
+							await _signInManager.SignInAsync(user, isPersistent: false);
+							return LocalRedirect(returnUrl);
+						}
+					}
+				}
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
