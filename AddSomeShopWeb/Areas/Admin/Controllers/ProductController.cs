@@ -4,6 +4,7 @@ using ABC.Models;
 using ABC.Models.ViewModels;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -16,10 +17,13 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         //Retrieve the Data from Database
@@ -92,10 +96,43 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                 if (productVM.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
+
+                    //-- LOG START --//
+                    var user = _userManager.GetUserAsync(User).Result;
+                    var auditLog = new AuditLog
+                    {
+                        UserName = User.Identity.Name,
+                        Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(),
+                        Action = "Create",
+                        EntityName = "Product",
+                        EntityKey = "Create Product",
+                        Changes = "New Product created: " + productVM.Product.productName,
+                        Timestamp = DateTime.Now,
+                        FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+                    };
+
+                    _unitOfWork.AuditLog.Add(auditLog);
+                    //-- LOG END --//
                 }
                 else
                 {
                     _unitOfWork.Product.Update(productVM.Product);
+                    //-- LOG START --//
+                    var user = _userManager.GetUserAsync(User).Result;
+                    var auditLog = new AuditLog
+                    {
+                        UserName = User.Identity.Name,
+                        Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(),
+                        Action = "Update",
+                        EntityName = "Product",
+                        EntityKey = "Update Product",
+                        Changes = "Product updated: " + productVM.Product.productName,
+                        Timestamp = DateTime.Now,
+                        FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+                    };
+
+                    _unitOfWork.AuditLog.Add(auditLog);
+                    //-- LOG END --//
                 }
 
 
@@ -138,6 +175,23 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Error while deleting"});
             }
+
+            // LOG START: Log the Delete action
+            var user = _userManager.GetUserAsync(User).Result;
+            var auditLogDelete = new AuditLog
+            {
+                UserName = User.Identity.Name,
+                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(),
+                Action = "Delete",
+                EntityName = "Product",
+                EntityKey = "Delete Product",
+                Changes = "Product deleted: " + productToBeDeleted.productName, 
+                Timestamp = DateTime.Now,
+                FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+            };
+
+            _unitOfWork.AuditLog.Add(auditLogDelete);
+            // LOG END
 
             var oldImagePath = 
             

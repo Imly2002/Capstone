@@ -65,8 +65,8 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                     Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
                     Action = "Create",
                     EntityName = "Category",
-                    EntityKey = obj.Name,
-                    Changes = "New Category created: " + obj.Name,
+                    EntityKey = "Create category",
+                    Changes = "New category created: " + obj.Name,
                     Timestamp = DateTime.Now,
                     FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
                 };
@@ -125,8 +125,8 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                     Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
                     Action = "Edit",
                     EntityName = "Category",
-                    EntityKey = "Edit Category",
-                    Changes = "Edited Category",
+                    EntityKey = "Edit category",
+                    Changes = "Edited category: " + obj.Name,
                     Timestamp = DateTime.Now,
                     FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
 
@@ -187,8 +187,8 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                 Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
                 Action = "Remove",
                 EntityName = "Category",
-                EntityKey = "Remove Category",
-                Changes = "Category Removed",
+                EntityKey = "Remove category",
+                Changes = "Deleted category: " + obj.Name,
                 Timestamp = DateTime.Now,
                 FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
             };

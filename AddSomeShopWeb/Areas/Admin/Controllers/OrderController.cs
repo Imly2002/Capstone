@@ -15,6 +15,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
+
         [BindProperty]
         public OrderVM OrderVM { get; set; }
 

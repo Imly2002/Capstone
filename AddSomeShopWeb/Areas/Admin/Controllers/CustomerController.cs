@@ -13,6 +13,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 	public class CustomerController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public CustomerController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

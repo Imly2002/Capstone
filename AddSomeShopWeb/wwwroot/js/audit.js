@@ -10,8 +10,8 @@ function loadDataTable(status) {
         "columns": [
             { data: 'userName', "width": "10%" },
             { data: 'role', "width": "7%" },
-            { data: 'entityName', "width": "7%" },
             { data: 'changes', "width": "10%" },
+            { data: 'action', "width": "7%" },
             { data: 'formattedTime', "width": "10%" },
             {
                 data: 'id',

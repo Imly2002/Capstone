@@ -3,6 +3,7 @@ using ABC.DataAccess.Repository.IRepository;
 using ABC.Models;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AddSomeShopWeb.Areas.Admin.Controllers
@@ -13,9 +14,12 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 	public class PurchaseOrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PurchaseOrderController(IUnitOfWork unitOfWork)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public PurchaseOrderController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         //Retrieve the Data from Database
@@ -39,6 +43,28 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                //LOG START
+                // Retrieve the user's role
+                var user = _userManager.GetUserAsync(User).Result;
+
+                // Create an audit log entry for the "Create" action with the user's role
+                var auditLog = new AuditLog
+                {
+                    UserName = User.Identity.Name,
+                    Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                    Action = "Create",
+                    EntityName = "Purchase order",
+                    EntityKey = "Create purchase order",
+                    Changes = "New purchase order: " + obj.SupplierName,
+                    Timestamp = DateTime.Now,
+                    FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+                };
+
+                // Save the audit log entry to the database.
+                _unitOfWork.AuditLog.Add(auditLog);
+                _unitOfWork.Save();
+                //LOG END
+
                 _unitOfWork.PurchaseOrder.Add(obj);
                 _unitOfWork.Save();
                 TempData["toastAdd"] = "PurchaseOrder Added successfully";
@@ -114,6 +140,29 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            //LOG START
+            // Retrieve the user's role
+            var user = _userManager.GetUserAsync(User).Result;
+
+            // Create an audit log entry for the "Create" action with the user's role
+            var auditLog = new AuditLog
+            {
+                UserName = User.Identity.Name,
+                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                Action = "Remove",
+                EntityName = "Purchase order",
+                EntityKey = "Create purchase order",
+                Changes = "Deleted purchase order: " + obj.SupplierName,
+                Timestamp = DateTime.Now,
+                FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+            };
+
+            // Save the audit log entry to the database.
+            _unitOfWork.AuditLog.Add(auditLog);
+            _unitOfWork.Save();
+            //LOG END
+
             _unitOfWork.PurchaseOrder.Remove(obj);
             _unitOfWork.Save();
             TempData["toastDel"] = "PurchaseOrder deleted successfully";
