@@ -4,7 +4,10 @@ using ABC.Models;
 using ABC.Utility;
 using AddSomeShopWeb.Areas.CustomerArea.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Packaging.Signing;
+using System.Security.Claims;
 
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
@@ -14,11 +17,14 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 	public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
+
 
         //Retrieve the Data from Database
         public IActionResult Index()
@@ -47,9 +53,33 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Category.Add(obj);
-                _unitOfWork.Save();
-                TempData["toastAdd"] = "Category Added successfully";
+
+                //LOG START
+                // Retrieve the user's role
+                var user = _userManager.GetUserAsync(User).Result; 
+
+                // Create an audit log entry for the "Create" action with the user's role
+                var auditLog = new AuditLog
+                {
+                    UserName = User.Identity.Name,
+                    Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                    Action = "Create",
+                    EntityName = "Category",
+                    EntityKey = obj.Name,
+                    Changes = "New Category created: " + obj.Name,
+                    Timestamp = DateTime.Now,
+                    FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+                };
+
+                // Save the audit log entry to the database.
+                _unitOfWork.AuditLog.Add(auditLog);
+				_unitOfWork.Save();
+                //LOG END
+
+				_unitOfWork.Category.Add(obj);
+				_unitOfWork.Save();
+
+				TempData["toastAdd"] = "Category Added successfully";
                 return RedirectToAction("Index", "Category");
             }
 
@@ -67,8 +97,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                 return NotFound();
             }
             Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
-            //Category? categoryFromDb1 = _db.Categories.FirstOrDefault(u=>u.Id==id);
-            //Category? categoryFromDb3 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();
+
 
             if (categoryFromDb == null)
             {
@@ -85,6 +114,29 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                //LOG START
+                // Retrieve the user's role
+                var user = _userManager.GetUserAsync(User).Result;
+
+                // Create an audit log entry for the "Create" action with the user's role
+                var auditLog = new AuditLog
+                {
+                    UserName = User.Identity.Name,
+                    Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                    Action = "Edit",
+                    EntityName = "Category",
+                    EntityKey = "Edit Category",
+                    Changes = "Edited Category",
+                    Timestamp = DateTime.Now,
+                    FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+
+                };
+
+                // Save the audit log entry to the database.
+                _unitOfWork.AuditLog.Add(auditLog);
+                _unitOfWork.Save();
+                //LOG END
+
                 _unitOfWork.Category.Update(obj);
                 _unitOfWork.Save();
                 TempData["toastUpd"] = "Category updated successfully";
@@ -123,6 +175,29 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            //LOG START
+            // Retrieve the user's role
+            var user = _userManager.GetUserAsync(User).Result;
+
+            // Create an audit log entry for the "Create" action with the user's role
+            var auditLog = new AuditLog
+            {
+                UserName = User.Identity.Name,
+                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                Action = "Remove",
+                EntityName = "Category",
+                EntityKey = "Remove Category",
+                Changes = "Category Removed",
+                Timestamp = DateTime.Now,
+                FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+            };
+
+            // Save the audit log entry to the database.
+            _unitOfWork.AuditLog.Add(auditLog);
+            _unitOfWork.Save();
+            //LOG END
+
             _unitOfWork.Category.Remove(obj);
             _unitOfWork.Save();
             TempData["toastDel"] = "Category deleted successfully";
