@@ -1,4 +1,7 @@
-﻿<div class="container-fluid">
+﻿@model Product
+
+
+<div class="container-fluid">
     <div class="row pt-4 pb-3">
         <!-- Title -->
         <div class="col-lg-9 col-sm-12 text-start mb-3 mb-sm-0">
@@ -22,13 +25,22 @@
                 <div class="dropdown d-flex flex-column justify-content-center" style="text-align: right">
                     <label for="Sales_channel" class="mb-0">
                         Sales Channel:
-                        <select id="Sales_channel" name="Sales_channel">
+                        <select id="salesearch" name="Sales_channel">
                             <option value="1">Walk-in</option>
                             <option value="2">On-call</option>
                             <option value="3">Chat-based</option>
                             <option value="4">Website</option>
                         </select>
                     </label>
+
+
+                    <div class="form-floating mb-3 col-md-6">
+                        <select asp-for="Id" asp-items="@ViewBag.products" class="form-select">
+                            <option disabled selected>-Select Role-</option>
+                        </select>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -207,3 +219,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/"></script>
+}

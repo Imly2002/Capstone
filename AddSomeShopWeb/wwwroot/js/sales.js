@@ -1,0 +1,5 @@
+﻿
+
+$(function () {
+    $(salesearch).Select2();
+});
