@@ -143,6 +143,19 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
 
+            //TO BE CONTINUED
+            //foreach (var cartItem in shoppingCarts)
+            //{
+            //    foreach (var orderDetail in cartItem.OrderDetail)
+            //    {
+            //        // Assuming you have a reference to the product in the OrderDetail
+            //        orderDetail.Product.StockQuantity -= orderDetail.Quantity;
+            //    }
+            //}
+
+            // Save changes to the database
+            _unitOfWork.Save();
+
             return View(id);
         }
 
