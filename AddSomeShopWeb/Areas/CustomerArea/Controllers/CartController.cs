@@ -118,6 +118,13 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
                     Count = cart.Count
                 };
 
+                // Update product quantities here
+                var product = _unitOfWork.Product.Get(p => p.Id == cart.ProductId);
+
+                product.StockQuantity -= cart.Count;
+                _unitOfWork.Product.Update(product);
+
+
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
 
@@ -140,21 +147,13 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
                 .GetAll(u=>u.ApplicationUserId==orderHeader.ApplicationUserId).ToList();
 
+
+            // Remove shopping cart items and save changes
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
 
-            //TO BE CONTINUED
-            //foreach (var cartItem in shoppingCarts)
-            //{
-            //    foreach (var orderDetail in cartItem.OrderDetail)
-            //    {
-            //        // Assuming you have a reference to the product in the OrderDetail
-            //        orderDetail.Product.StockQuantity -= orderDetail.Quantity;
-            //    }
-            //}
 
-            // Save changes to the database
-            _unitOfWork.Save();
+
 
             return View(id);
         }
@@ -212,5 +211,6 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
         {
             return shoppingCart.Product.RetailPrice;
         }
+
     }
 }

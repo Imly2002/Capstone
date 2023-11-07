@@ -63,6 +63,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
         }
 
+
         //Post the Data to Database
         [HttpPost]
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
@@ -84,12 +85,12 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                             System.IO.File.Delete(oldImagePath);    
                         }
                     }
-
+                    //Upload Image
                     using (var fileStream = new FileStream (Path.Combine(productPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
-
+                    //Ipload Image URl
                     productVM.Product.ImageUrl = @"\image\product\" + fileName;
                 }
 
@@ -137,7 +138,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
 
                 _unitOfWork.Save();
-                TempData["toastAdd"] = "Product Added successfully";
+                TempData["toastAdd"] = "Product Updated successfully";
                 return RedirectToAction("Index");
             }
             else
