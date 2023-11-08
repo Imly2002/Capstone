@@ -1,4 +1,4 @@
-﻿@model Product
+﻿
 
 
 <div class="container-fluid">
@@ -34,11 +34,8 @@
                     </label>
 
 
-                    <div class="form-floating mb-3 col-md-6">
-                        <select asp-for="Id" asp-items="@ViewBag.products" class="form-select">
-                            <option disabled selected>-Select Role-</option>
-                        </select>
-                    </div>
+
+                    
 
 
                 </div>
@@ -60,6 +57,10 @@
             <div class="search-btn">
                 <a class="btn btn-primary" asp-area="Admin" asp-controller="Sales" asp-action="AddProduct">Search Product</a>
             </div>
+        </div>
+        <div class="col-6">
+            <label for="productSearch">Search for a Product:</label>
+            <select id="productSearch" class="form-control"></select>
         </div>
     </div>
 
@@ -221,5 +222,5 @@
 </div>
 
 @section Scripts{
-    <script src="~/js/"></script>
+    <script src="~/js/sales.js"></script>
 }

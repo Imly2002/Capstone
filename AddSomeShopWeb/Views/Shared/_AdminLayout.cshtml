@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AddSomeShopWeb.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
-
-
+	<link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+	<link href="~/lib/sweetalert/sweetalert.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -126,7 +125,7 @@
                             </div>
 
                             <!--Report & Analytics-->
-                            <a class="btn btn-outline-secondary" href="#" role="button">
+                            <a class="btn btn-outline-secondary" asp-area="Admin" asp-controller="Report" asp-action="Index" role="button">
                                 <span class="align-lefty"><i class="bi bi-clipboard-data pe-2"></i> Report</span>
                             </a>
 
@@ -180,13 +179,11 @@
         </div>
     </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js" ></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/sweetalert/sweetalert.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" ></script>
+	<script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
