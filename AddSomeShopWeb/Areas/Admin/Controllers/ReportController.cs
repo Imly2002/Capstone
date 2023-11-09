@@ -43,47 +43,22 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
             // Total Cost Price
             double totalCostPrice = _db.Products.Sum(product => product.CostPrice);
 
-            // Get the best-selling product
-            var bestSellerProduct = GetBestSellerProduct();
-
-            // Add bestSellerProduct details to ViewBag
-            ViewBag.BestSellerProduct = bestSellerProduct?.productName ?? "N/A";
-            ViewBag.BestSellerQuantitySold = bestSellerProduct != null
-                ? _db.OrderDetails
-                    .Where(detail => detail.OrderHeader.PaymentStatus == "Paid" && detail.ProductId == bestSellerProduct.Id)
-                    .Sum(detail => detail.Count)
-                : 0;
-
-            ViewBag.BestSellerTotalPrice = bestSellerProduct != null
-                ? _db.OrderDetails
-                    .Where(detail => detail.OrderHeader.PaymentStatus == "Paid" && detail.ProductId == bestSellerProduct.Id)
-                    .Sum(detail => detail.Count * detail.Price)
-                : 0;
+            var bestSellingProducts = _db.OrderDetails
+        .Include(detail => detail.Product)
+        .GroupBy(detail => detail.Product)
+        .OrderByDescending(group => group.Sum(detail => detail.Count))
+        .Select(group => group.Key)
+        .ToList();
 
             ViewBag.SalesRevenue = salesRevenue;
             ViewBag.NumberOfItemsSold = numberOfItemsSold;
             ViewBag.Profit = totalProfit;
             ViewBag.TotalCostPrice = totalCostPrice;
+            ViewBag.OrderDetails = _db.OrderDetails.ToList();
 
-            ViewBag.BestSellerProduct = bestSellerProduct;
-
-            return View();
+            return View(bestSellingProducts);
         }
 
-        private Product GetBestSellerProduct()
-        {
-            var bestSellerProductId = _db.OrderHeaders
-                .Where(order => order.PaymentStatus == "Paid")
-                .SelectMany(order => order.OrderDetails)
-                .GroupBy(detail => detail.ProductId)
-                .AsEnumerable() // Switch to client-side evaluation
-                .OrderByDescending(group => group.Sum(detail => detail.Count))
-                .FirstOrDefault()?.Key;
-
-            var bestSellerProduct = _db.Products.FirstOrDefault(product => product.Id == bestSellerProductId);
-
-            return bestSellerProduct;
-        }
 
     }
 }

@@ -1,4 +1,8 @@
-﻿
+﻿@model List<ABC.Models.Product>
+
+@{
+    var orderDetails = (List<ABC.Models.OrderDetail>)ViewBag.OrderDetails;
+}
 
 <div class="container">
     <!--Title-->
@@ -45,36 +49,35 @@
 
         <div class="col-4">
 
-            <table class="table table-bordered">
+            <table class="table table-active">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Product Name</th>
-                        <th>Quantity Sold</th>
-                        <th>Total Price</th>
+                        <th>Best Seller</th>
+                        <th>Qty.</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
 
-                <tbody id="selectedProducts">
-                    @if (ViewBag.BestSellerProduct != null)
+                <tbody>
+                    @foreach (var product in Model)
                     {
-                        <tr>
-                            <td><i class="bi bi-trophy"></i></td>
-                            <td>@((ViewBag.BestSellerProduct as ABC.Models.Product)?.productName ?? "N/A")</td>
+                        var totalSold = (int)orderDetails.Where(detail => detail.ProductId == product.Id).Sum(detail => detail.Count);
+                        var totalPrice = orderDetails
+                        .Where(detail => detail.ProductId == product.Id)
+                        .Sum(detail => detail.Product != null ? (detail.Product.RetailPrice * detail.Count) : 0);
 
-                            <td>@ViewBag.BestSellerQuantitySold</td>
-                            <td>@ViewBag.BestSellerTotalPrice</td>
-                        </tr>
-                    }
-                    else
-                    {
                         <tr>
-                            <td colspan="4" class="text-center">No best-selling product found</td>
+                            <td><img src="@product.ImageUrl" alt="Product Image" width="50" height="50"></td>
+                            <td>@product.productName</td>
+                            <td>@totalSold</td>
+                            <td>@String.Format("{0:C}", totalPrice)</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
+
 
 
     </div>
