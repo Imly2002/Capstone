@@ -44,18 +44,39 @@
         </div>
 
         <div class="col-4">
-            <h2 class="text-center"><i class="bi bi-star-fill"></i> Best Seller</h2>
 
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Product Name</th>
                         <th>Quantity Sold</th>
+                        <th>Total Price</th>
                     </tr>
                 </thead>
-            </table>
 
+                <tbody id="selectedProducts">
+                    @if (ViewBag.BestSellerProduct != null)
+                    {
+                        <tr>
+                            <td><i class="bi bi-trophy"></i></td>
+                            <td>@((ViewBag.BestSellerProduct as ABC.Models.Product)?.productName ?? "N/A")</td>
+
+                            <td>@ViewBag.BestSellerQuantitySold</td>
+                            <td>@ViewBag.BestSellerTotalPrice</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">No best-selling product found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
+
+
     </div>
 </div>
 

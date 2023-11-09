@@ -15,11 +15,13 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly AppDBContext _db;
 
-        public PurchaseOrderController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+        public PurchaseOrderController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, AppDBContext db)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _db = db;
         }
 
         //Retrieve the Data from Database
@@ -35,6 +37,19 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
         {
             return View();
 
+        }
+
+        // Add a new action to fetch product data as JSON for Select2
+        [HttpGet]
+        public IActionResult GetProducts(string term)
+        {
+            var products = _db.Products
+                .Where(p => p.productName.Contains(term))
+                .Select(p => new { id = p.Id, text = p.productName, img = p.ImageUrl })
+                .ToList();
+
+
+            return Json(products);
         }
 
         //Post the Data to Database

@@ -44,6 +44,7 @@ function formatResults(data) {
     // Construct the complete image URL by prepending the application base URL
     var completeImageUrl = window.location.origin + imageUrl;
 
+
     var container = $(
         `<table width="100%">
             <tr>
@@ -62,8 +63,8 @@ function formatResults(data) {
 }
 
 
-//$(document).on('select2:open', () => {
-//    document.querySelector('.select2-search__field').focus();
-//});
+$(document).on('select2:open', () => {
+    document.querySelector('.select2-search__field').focus();
+});
 
 

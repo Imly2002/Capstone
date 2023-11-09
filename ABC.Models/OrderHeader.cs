@@ -18,6 +18,8 @@ namespace ABC.Models
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
 
+        public List<OrderDetail> OrderDetails { get; set; }
+
         public DateTime OrderDate { get; set; }
         public DateTime ShippingDate { get; set; }
         public double OrderTotal { get; set; }

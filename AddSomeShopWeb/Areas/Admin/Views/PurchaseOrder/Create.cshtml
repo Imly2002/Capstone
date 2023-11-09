@@ -122,24 +122,45 @@
                 <div class="border p-3 container shadow">
                     <!--Title-->
                     <div class="row pb-2">
-                        <h4 class="text-primary">Product/s to adjust stock</h4>
+                        <h4 class="text-primary">Product</h4>
                         <hr />
                     </div>
 
                     <div class="row pb-2">
-                        <!-- Add -->
-                        <div class="col-lg-2 col-sm-6 text-center mb-3 mb-sm-0">
-                            <a class="btn btn-success" href="#" role="button">
-                                <i class="bi bi-plus-square"></i> Add
-                            </a>
+                        <div class="col-6">
+                            <label for="productSearch">Search for a Product:</label>
+                            <select id="productSearch" class="form-control"></select>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Scan Barcode -->
-                        <div class="col-lg-2 col-sm-6 text-center mb-3 mb-sm-0">
-                            <a href="#" class="btn btn-primary">
-                                <i class="bi bi-upc"></i> Scan Barcode
-                            </a>
-                        </div>
+        <!--Table for purchased-->
+        <div class="row pb-2">
+            <div class="col-12">
+                <div class="border p-3 container shadow">
+                    <!--Title-->
+                    <div class="row pb-2">
+                        <h4 class="text-primary">Products</h4>
+                        <hr />
+                    </div>
+
+                    <div class="row pb-2">
+                        <table id="tblData" class="table table-bordered table-striped table-hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Cost</th>
+                                    <th>Qty</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="selectedProducts">
+                                <!-- Selected products will be added here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -200,8 +221,6 @@
 
 
 @section Scripts{
-	@{
-		<partial name="_ConfirmationModalScript"/>
-	}
+    <script src="~/js/purchsearch.js"></script>
 }
 

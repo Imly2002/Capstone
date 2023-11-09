@@ -35,6 +35,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                 .Select(p => new { id = p.Id, text = p.productName, retailPrice = p.RetailPrice, img = p.ImageUrl })
                 .ToList();
 
+
             return Json(products);
         }
 
