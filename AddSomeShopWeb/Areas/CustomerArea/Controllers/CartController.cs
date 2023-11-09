@@ -120,7 +120,6 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
 
                 // Update product quantities here
                 var product = _unitOfWork.Product.Get(p => p.Id == cart.ProductId);
-
                 product.StockQuantity -= cart.Count;
                 _unitOfWork.Product.Update(product);
 

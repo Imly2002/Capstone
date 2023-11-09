@@ -1,5 +1,6 @@
-﻿<div class="container">
+﻿
 
+<div class="container">
     <!--Title-->
     <div class="row pt-4 pb-3">
         <div class="col-lg-6 col-sm-12 text-start mb-3 mb-sm-0">
@@ -7,35 +8,54 @@
         </div>
     </div>
 
-    <div class="row pt-4 pb-3">
-        <div class="col-3">
-            <h4>Sales Performance</h4>
-        </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col-6">
+                    <div class="alert alert-dismissible alert-success">
+                        <p>Sales Revenue</p>
+                        <strong>Php</strong> @ViewBag.SalesRevenue
+                    </div>
+                </div>
 
-        <div class="col-3">
-            <div class="alert alert-dismissible alert-success">
-                <p>Sales Revenue</p>
-                <strong>Php</strong> @ViewBag.SalesRevenue
+                <div class="col-6">
+                    <div class="alert alert-dismissible alert-success">
+                        <p>Gross Profit</p>
+                        <strong>Php</strong> @ViewBag.Profit
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="alert alert-dismissible alert-success">
+                        <span>
+                            <p># of Items Sold</p> @ViewBag.NumberOfItemsSold
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="alert alert-dismissible alert-success">
+                        <span>
+                            <p>Purchase Cost</p> @ViewBag.TotalCostPrice
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col-3">
-            <div class="alert alert-dismissible alert-success">
-                <p>Gross Profit</p>
-                <strong>Php</strong> @ViewBag.Profit
-            </div>
+        <div class="col-4">
+            <h2 class="text-center"><i class="bi bi-star-fill"></i> Best Seller</h2>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity Sold</th>
+                    </tr>
+                </thead>
+            </table>
+
         </div>
-
-        <div class="col-3">
-            <div class="alert alert-dismissible alert-success">
-                <span>
-                    <p># of Items Sold</p> @ViewBag.NumberOfItemsSold
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row pt-4 pb-3">
-
     </div>
 </div>
+

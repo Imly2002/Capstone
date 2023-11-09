@@ -1,10 +1,11 @@
 ﻿using ABC.DataAccess.Data;
+using ABC.Models;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq; // Add this using statement for LINQ
-using ABC.Models; // Add this using statement for the OrderHeader model
+
 
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
@@ -13,7 +14,6 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
     public class ReportController : Controller
     {
         private readonly AppDBContext _db;
-
         public ReportController(AppDBContext db)
         {
             _db = db;
@@ -40,10 +40,14 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
                 .SelectMany(order => _db.OrderDetails.Where(detail => detail.OrderHeaderId == order.Id))
                 .Sum(detail => detail.Count);
 
+            // Total Cost Price
+            double totalCostPrice = _db.Products.Sum(product => product.CostPrice);
+
 
             ViewBag.SalesRevenue = salesRevenue;
             ViewBag.NumberOfItemsSold = numberOfItemsSold; 
             ViewBag.Profit = totalProfit;
+            ViewBag.TotalCostPrice = totalCostPrice;
 
             return View();
         }
