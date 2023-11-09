@@ -3,6 +3,7 @@ using ABC.Models;
 using ABC.Models.ViewModels;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -61,9 +62,10 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
 
 			ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
 			ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-			ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
+			ShoppingCartVM.OrderHeader.StreetName = ShoppingCartVM.OrderHeader.ApplicationUser.StreetName;
 			ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-			ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+			ShoppingCartVM.OrderHeader.Province = ShoppingCartVM.OrderHeader.ApplicationUser.Province;
+            ShoppingCartVM.OrderHeader.Barangay = ShoppingCartVM.OrderHeader.ApplicationUser.Barangay;
 			ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
 
 
@@ -116,6 +118,12 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
                     Count = cart.Count
                 };
 
+                // Update product quantities here
+                var product = _unitOfWork.Product.Get(p => p.Id == cart.ProductId);
+                product.StockQuantity -= cart.Count;
+                _unitOfWork.Product.Update(product);
+
+
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
 
@@ -133,11 +141,18 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
                 _unitOfWork.Save();
             }
 
+            HttpContext.Session.Clear();
+
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
                 .GetAll(u=>u.ApplicationUserId==orderHeader.ApplicationUserId).ToList();
 
+
+            // Remove shopping cart items and save changes
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
+
+
+
 
             return View(id);
         }
@@ -156,11 +171,13 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
         //Minus Button
         public IActionResult Minus(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked:true);
 
             //Remove the item if less than 1
             if(cartFromDb.Count <= 1)
             {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count()-1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -176,10 +193,12 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
         //Delete Button
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked:true);
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+            .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
 
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
-
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
@@ -191,5 +210,6 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
         {
             return shoppingCart.Product.RetailPrice;
         }
+
     }
 }

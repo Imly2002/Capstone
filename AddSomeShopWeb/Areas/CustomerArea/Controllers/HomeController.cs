@@ -3,6 +3,7 @@ using ABC.Models;
 using ABC.Models.ViewModels;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -30,6 +31,16 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
 
         public IActionResult Shop()
         {
+            //Get user ID of logged in User
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
+            }
+
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Supplier");
             return View(productList);
         }
@@ -61,15 +72,18 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
                 //Shopping Cart exists
                 cartFromDb.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
             }
             else
             {
                 //add cart
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart,
+			    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
             }
 
             TempData["toastAdd"] = "Product Added to cart successfully";
-            _unitOfWork.Save();
             return RedirectToAction(nameof(Shop));
         }
 
@@ -84,7 +98,18 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult ViewOrder(int orderId)
+		{
+			OrderVM = new()
+			{
+				OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
+				OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product")
+			};
+			return View(OrderVM);
+		}
+
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -104,9 +129,6 @@ namespace AddSomeShopWeb.Areas.CustomerArea.Controllers
 
             switch (status)
             {
-                case "pending":
-                    objOrderHeaders = objOrderHeaders.Where(u => u.PaymentStatus == SD.PaymentStatusPending);
-                    break;
                 case "inprocess":
                     objOrderHeaders = objOrderHeaders.Where(u => u.OrderStatus == SD.StatusProcessing);
                     break;

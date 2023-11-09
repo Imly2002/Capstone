@@ -15,6 +15,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 	public class OrderController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
+
         [BindProperty]
         public OrderVM OrderVM { get; set; }
 
@@ -48,9 +49,10 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
             orderHeaderFromb.Name = OrderVM.OrderHeader.Name;
             orderHeaderFromb.PhoneNumber = OrderVM.OrderHeader.PhoneNumber;
-            orderHeaderFromb.StreetAddress = OrderVM.OrderHeader.StreetAddress;
+            orderHeaderFromb.StreetName = OrderVM.OrderHeader.StreetName;
             orderHeaderFromb.City = OrderVM.OrderHeader.City;
-            orderHeaderFromb.State = OrderVM.OrderHeader.State;
+            orderHeaderFromb.Province = OrderVM.OrderHeader.Province;
+            orderHeaderFromb.Barangay = OrderVM.OrderHeader.Barangay;
             orderHeaderFromb.PostalCode = OrderVM.OrderHeader.PostalCode;
 
             if (!string.IsNullOrEmpty(OrderVM.OrderHeader.Carrier))
@@ -94,10 +96,11 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 			orderHeader.Carrier = OrderVM.OrderHeader.Carrier;
 			orderHeader.OrderStatus = SD.StatusShipped;
 			orderHeader.ShippingDate = DateTime.Now;
+            orderHeader.OrderStatus = SD.StatusShipped;
 
 			_unitOfWork.OrderHeader.Update(orderHeader);
-			_unitOfWork.Save();
-			TempData["toastAdd"] = "Order Shipped Succesfully";
+            _unitOfWork.Save();
+			TempData["toastAdd"] = "Order Out for Delivery!";
 			return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
 		}
 
@@ -153,9 +156,7 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
             switch (status)
             {
-                case "pending":
-                    objOrderHeaders = objOrderHeaders.Where(u=>u.PaymentStatus == SD.PaymentStatusPending); 
-					break;
+                
                 case "inprocess":
                     objOrderHeaders = objOrderHeaders.Where(u => u.OrderStatus== SD.StatusProcessing);
                     break;

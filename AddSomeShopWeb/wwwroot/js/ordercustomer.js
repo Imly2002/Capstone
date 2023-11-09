@@ -9,8 +9,8 @@ $(document).ready(function () {
         if (url.includes("completed")) {
             loadDataTable("completed");
         } else {
-            if (url.includes("pending")) {
-                loadDataTable("pending");
+            if (url.includes("shipped")) {
+                loadDataTable("shipped");
             } else {
                 if (url.includes("approved")) {
                     loadDataTable("approved");
@@ -37,7 +37,7 @@ function loadDataTable(status) {
                 data: 'id',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
-                                <a href="/admin/order/details?orderId=${data}" class="btn btn-outline-primary btn-sm"> <i class="bi bi-pencil-square"></i></a>
+                                <a href="/customerArea/home/viewOrder?orderId=${data}" class="btn btn-outline-primary btn-sm"> <i class="bi bi-pencil-square"></i></a>
                             </div>`
                 },
                 "width": "10%"

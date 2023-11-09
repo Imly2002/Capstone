@@ -41,8 +41,8 @@
 							<div class="row my-1">
 								<div class="col-3">Address</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
-									<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+									<input asp-for="OrderHeader.StreetName" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.StreetName" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -53,10 +53,17 @@
 								</div>
 							</div>
 							<div class="row my-1">
-								<div class="col-3">State</div>
+								<div class="col-3">Province</div>
 								<div class="col-9">
-									<input asp-for="OrderHeader.State" type="text" class="form-control" />
-									<span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+									<input asp-for="OrderHeader.Province" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.Province" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="row my-1">
+								<div class="col-3">Barangay</div>
+								<div class="col-9">
+									<input asp-for="OrderHeader.Barangay" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.Barangay" class="text-danger"></span>
 								</div>
 							</div>
 							<div class="row my-1">
@@ -145,25 +152,30 @@
 							@if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
 							{
 								@if (Model.OrderHeader.OrderStatus == SD.StatusShipped)
-								{
+								{	
+									<!--PAYMENT RECEIVED-->
 									<button type="submit" class="btn btn-success form-control my-1">Payment Received</button>
 								}
 
 								@if (Model.OrderHeader.OrderStatus == SD.StatusApproved)
 								{
+									<!--START RECEIVED-->
 									<button type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1">Start Processing</button>
 								}
 
 								@if (Model.OrderHeader.OrderStatus == SD.StatusProcessing)
 								{
+									<!--DELIVER ORDER-->
 									<button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-outline-primary form-control my-1">Deliver Order</button>
 								}
 
 
 								@if (Model.OrderHeader.OrderStatus != SD.StatusRefunded &&
 										Model.OrderHeader.OrderStatus != SD.StatusCancelled &&
-										Model.OrderHeader.OrderStatus != SD.StatusShipped)
+										Model.OrderHeader.OrderStatus != SD.StatusApproved  &&
+										Model.OrderHeader.OrderStatus != SD.StatusCompleted)
 								{
+									<!--CANCEL ORDER-->
 									<button type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1">Cancel Order</button>
 								}
 							}

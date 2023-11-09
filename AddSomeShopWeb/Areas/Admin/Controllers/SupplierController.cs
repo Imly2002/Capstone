@@ -3,19 +3,22 @@ using ABC.DataAccess.Repository.IRepository;
 using ABC.Models;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
-
-    public class SupplierController : Controller
+	[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+	public class SupplierController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public SupplierController(IUnitOfWork unitOfWork)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public SupplierController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         //Retrieve the Data from Database
@@ -39,6 +42,29 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //LOG START
+                // Retrieve the user's role
+                var user = _userManager.GetUserAsync(User).Result;
+
+                // Create an audit log entry for the "Create" action with the user's role
+                var auditLog = new AuditLog
+                {
+                    UserName = User.Identity.Name,
+                    Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                    Action = "Create",
+                    EntityName = "Supplier",
+                    EntityKey = "Create supplier",
+                    Changes = "New supplier created: " + obj.supplierCompanyName,
+                    Timestamp = DateTime.Now,
+                    FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+                };
+
+                // Save the audit log entry to the database.
+                _unitOfWork.AuditLog.Add(auditLog);
+                _unitOfWork.Save();
+                //LOG END
+
                 _unitOfWork.Supplier.Add(obj);
                 _unitOfWork.Save();
                 TempData["toastAdd"] = "Supplier Added successfully";

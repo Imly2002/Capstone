@@ -3,19 +3,25 @@ using ABC.DataAccess.Repository.IRepository;
 using ABC.Models;
 using ABC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
+	[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
 
-    public class PurchaseOrderController : Controller
+	public class PurchaseOrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PurchaseOrderController(IUnitOfWork unitOfWork)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly AppDBContext _db;
+
+        public PurchaseOrderController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, AppDBContext db)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _db = db;
         }
 
         //Retrieve the Data from Database
@@ -33,12 +39,47 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
 
         }
 
+        // Add a new action to fetch product data as JSON for Select2
+        [HttpGet]
+        public IActionResult GetProducts(string term)
+        {
+            var products = _db.Products
+                .Where(p => p.productName.Contains(term))
+                .Select(p => new { id = p.Id, text = p.productName, img = p.ImageUrl })
+                .ToList();
+
+
+            return Json(products);
+        }
+
         //Post the Data to Database
         [HttpPost]
         public IActionResult Create(PurchaseOrder obj)
         {
             if (ModelState.IsValid)
             {
+                //LOG START
+                // Retrieve the user's role
+                var user = _userManager.GetUserAsync(User).Result;
+
+                // Create an audit log entry for the "Create" action with the user's role
+                var auditLog = new AuditLog
+                {
+                    UserName = User.Identity.Name,
+                    Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                    Action = "Create",
+                    EntityName = "Purchase order",
+                    EntityKey = "Create purchase order",
+                    Changes = "New purchase order: " + obj.SupplierName,
+                    Timestamp = DateTime.Now,
+                    FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+                };
+
+                // Save the audit log entry to the database.
+                _unitOfWork.AuditLog.Add(auditLog);
+                _unitOfWork.Save();
+                //LOG END
+
                 _unitOfWork.PurchaseOrder.Add(obj);
                 _unitOfWork.Save();
                 TempData["toastAdd"] = "PurchaseOrder Added successfully";
@@ -114,6 +155,29 @@ namespace AddSomeShopWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            //LOG START
+            // Retrieve the user's role
+            var user = _userManager.GetUserAsync(User).Result;
+
+            // Create an audit log entry for the "Create" action with the user's role
+            var auditLog = new AuditLog
+            {
+                UserName = User.Identity.Name,
+                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault(), // Get the user's role
+                Action = "Remove",
+                EntityName = "Purchase order",
+                EntityKey = "Create purchase order",
+                Changes = "Deleted purchase order: " + obj.SupplierName,
+                Timestamp = DateTime.Now,
+                FormattedTime = DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")
+            };
+
+            // Save the audit log entry to the database.
+            _unitOfWork.AuditLog.Add(auditLog);
+            _unitOfWork.Save();
+            //LOG END
+
             _unitOfWork.PurchaseOrder.Remove(obj);
             _unitOfWork.Save();
             TempData["toastDel"] = "PurchaseOrder deleted successfully";

@@ -18,6 +18,8 @@ namespace ABC.Models
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
 
+        public List<OrderDetail> OrderDetails { get; set; }
+
         public DateTime OrderDate { get; set; }
         public DateTime ShippingDate { get; set; }
         public double OrderTotal { get; set; }
@@ -32,15 +34,18 @@ namespace ABC.Models
         public string? PhoneNumber {  get; set; }
 
         [Required]
-        public string? StreetAddress { get; set; }
+        public string? StreetName { get; set; }
 
         [Required]
         public string? City { get; set; }
 
         [Required]
-        public string? State { get; set; }
+        public string? Province { get; set; }
 
-        [Required]
+		[Required]
+		public string? Barangay { get; set; }
+
+		[Required]
         public string? PostalCode { get; set; }
 
         [Required]

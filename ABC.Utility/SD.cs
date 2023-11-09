@@ -17,15 +17,18 @@ namespace ABC.Utility
 		public const string StatusPending = "Pending";
 		public const string StatusApproved = "Approved";
 		public const string StatusProcessing = "Processing";
-		public const string StatusShipped = "Shipped";
+		public const string StatusShipped = "Out for Delivery";
 		public const string StatusCompleted = "Completed";
+
 		public const string StatusCancelled = "Cancelled";
         public const string StatusRefunded = "Refunded";
 
 
         //Payment Status
-        public const string PaymentStatusPending = "Pending";
+        public const string PaymentStatusPending = "Pending"; //default 
 		public const string PaymentStatusApproved = "Paid";
-		
+
+
+		public const string SessionCart = "SessionShoppingCart";
 	}
 }

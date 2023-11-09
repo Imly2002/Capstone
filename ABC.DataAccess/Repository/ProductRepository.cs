@@ -24,26 +24,26 @@ namespace ABC.DataAccess.Repository
 			var objFromDB = _db.Products.FirstOrDefault(u => u.Id == obj.Id);
 			if (objFromDB != null)
 			{
-				objFromDB.Barcode = objFromDB.Barcode;
-                objFromDB.SKU = objFromDB.SKU;
-                objFromDB.productName = objFromDB.productName;
-                objFromDB.Category = objFromDB.Category;
-				objFromDB.subCategory = objFromDB.subCategory;
-                objFromDB.Brand = objFromDB.Brand;
-                objFromDB.Warehouse = objFromDB.Warehouse;
-                objFromDB.Description = objFromDB.Description;
-                objFromDB.CostPrice = objFromDB.CostPrice;
-                objFromDB.RetailPrice = objFromDB.RetailPrice;
-                objFromDB.StockQuantity = objFromDB.StockQuantity;
-                objFromDB.MinimumStockQuantity = objFromDB.MinimumStockQuantity;
-                objFromDB.Type = objFromDB.Type;
-                objFromDB.Duration = objFromDB.Duration;
-                objFromDB.Provider = objFromDB.Provider;
-                objFromDB.SpecOne = objFromDB.SpecOne;
-                objFromDB.SpecTwo = objFromDB.SpecTwo;
-                objFromDB.SpecThree = objFromDB.SpecThree;
-                objFromDB.addNotes = objFromDB.addNotes;
-                objFromDB.SupplierId = objFromDB.SupplierId;
+				objFromDB.Barcode = obj.Barcode;
+                objFromDB.SKU = obj.SKU;
+                objFromDB.productName = obj.productName;
+                objFromDB.Category = obj.Category;
+				objFromDB.subCategory = obj.subCategory;
+                objFromDB.Brand = obj.Brand;
+                objFromDB.Warehouse = obj.Warehouse;
+                objFromDB.Description = obj.Description;
+                objFromDB.CostPrice = obj.CostPrice;
+                objFromDB.RetailPrice = obj.RetailPrice;
+                objFromDB.StockQuantity = obj.StockQuantity;
+                objFromDB.MinimumStockQuantity = obj.MinimumStockQuantity;
+                objFromDB.Type = obj.Type;
+                objFromDB.Duration = obj.Duration;
+                objFromDB.Provider = obj.Provider;
+                objFromDB.SpecOne = obj.SpecOne;
+                objFromDB.SpecTwo = obj.SpecTwo;
+                objFromDB.SpecThree = obj.SpecThree;
+                objFromDB.addNotes = obj.addNotes;
+                objFromDB.SupplierId = obj.SupplierId;
 
                 if (obj.ImageUrl != null)
                 {

@@ -113,10 +113,11 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
             //Additional Column To User DB
             [Required]
             public string Name { get; set; }
-            public string? StreetAddress {  get; set; }
+            public string? StreetName {  get; set; }
             public string? City {  get; set; }
-            public string? State { get; set; }
-            public string? PostalCode { get; set; }
+            public string? Province { get; set; }
+			public string? Barangay { get; set; }
+			public string? PostalCode { get; set; }
             public string? PhoneNumber { get; set; }
 
 
@@ -125,13 +126,7 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-
-            }
+           
 
             Input = new()
             {
@@ -157,9 +152,10 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.Name = Input.Name;
-                user.StreetAddress = Input.StreetAddress;
+                user.StreetName = Input.StreetName;
                 user.City = Input.City;
-                user.State = Input.State;
+                user.Province = Input.Province;
+                user.Barangay = Input.Barangay;
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
@@ -196,10 +192,18 @@ namespace AddSomeShopWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-                }
+						if (User.IsInRole(SD.Role_Admin))
+						{
+							TempData["toastAdd"] = "New User Created Successfully";
+							return RedirectToAction("Index", "User", new { area = "admin" });
+						}
+						else
+						{
+							await _signInManager.SignInAsync(user, isPersistent: false);
+							return LocalRedirect(returnUrl);
+						}
+					}
+				}
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

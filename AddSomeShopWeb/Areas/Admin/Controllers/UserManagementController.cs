@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace AddSomeShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
-
-    public class UserManagementController : Controller
+	[Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee)]
+	public class UserManagementController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         public UserManagementController(IUnitOfWork unitOfWork)

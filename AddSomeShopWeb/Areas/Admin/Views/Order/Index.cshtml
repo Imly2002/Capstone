@@ -1,7 +1,7 @@
 ﻿@{
     var status = Context.Request.Query["status"];
 
-    var pending = "text-primary";
+    var shipped = "text-primary";
     var inprocess = "text-primary";
     var completed = "text-primary";
     var approved = "text-primary";
@@ -9,7 +9,7 @@
 
     switch (status)
     {
-        case "pending": pending = "active text-white bg-primary"; break;
+        case "shipped": shipped = "active text-white bg-primary"; break;
         case "inprocess": inprocess = "active text-white bg-primary"; break;
         case "completed": completed = "active text-white bg-primary"; break;
         case "approved": approved = "active text-white bg-primary"; break;
@@ -41,15 +41,13 @@
         <span></span>
 
         <ul class="list-group list-group-horizontal-sm">
-            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
-            {
-                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
-                <li class="list-group-item @pending">Payment Pending</li>
-                </a>
-            }
+
+            <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="shipped">
+            <li class="list-group-item @shipped">Out for Delivery</li>
+            </a>
 
             <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
-            <li class="list-group-item @approved">Approved</li>
+            <li class="list-group-item @approved">To Process</li>
             </a>
 
             <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
